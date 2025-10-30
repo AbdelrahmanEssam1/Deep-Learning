@@ -1,0 +1,9 @@
+Conversation Log:
+You: hello, how are you? can you answer shortly ?
+AI: I'm doing well, thank you! How can I help you?
+You: do you know my name ?
+AI: I do not. I'm an AI and I don't have access to your personal information.
+You: okay my name is abdo
+AI: Nice to meet you, Abdo
+You: can you tell me what is my name ?
+AI: Your name is Abdo.
