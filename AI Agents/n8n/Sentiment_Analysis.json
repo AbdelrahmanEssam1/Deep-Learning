@@ -1,0 +1,167 @@
+{
+  "name": "Sentiment_Analysis",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Review",
+        "formDescription": "This form for providing your review",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Your Name",
+              "placeholder": "Ex. Omar Salah",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Your Review",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        -448,
+        -32
+      ],
+      "id": "919d85cd-565f-4d23-9bf6-d1772a7def6e",
+      "name": "On form submission",
+      "webhookId": "caf98127-7b4f-41dc-a5d4-8b234ac4bcc8"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-pro",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-pro"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=This is the customer review:{{ $json['Your Review'] }}\nYou are an expert in sentiment analysis. When i give you a customer review, classify its overall sentiment and reply with exactly one word:\n\"Positive\", \"Negative\", or \"Neutral\". Do not add any extra text or explanation-just the single label."
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        -144,
+        -32
+      ],
+      "id": "3bddddd9-3869-4200-86cc-5c77a1defcc5",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "oB5ZpRF33oMTW2rY",
+          "name": "Google Gemini(PaLM) Api account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1of7wyxGzqpqSwAHbv7oInKYz-OxuOIz7scu_i_yU9cg",
+          "mode": "list",
+          "cachedResultName": "Sentiment_Analysis",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1of7wyxGzqpqSwAHbv7oInKYz-OxuOIz7scu_i_yU9cg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "الورقة1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1of7wyxGzqpqSwAHbv7oInKYz-OxuOIz7scu_i_yU9cg/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Review": "={{ $json.content.parts[0].text }}",
+            "Name": "={{ $('On form submission').item.json['Your Name'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Review",
+              "displayName": "Review",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        400,
+        -96
+      ],
+      "id": "0bd5684c-da41-499e-b32e-296b5d72b828",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "4MWHuO9sY3OFRbmk",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "3ff0418b-f734-459d-abac-db1e70bc9754",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "54430e0b4d2d47b7a1f8ae1dfdba81622b3f5f71114a6dd7fe0903aae537487b"
+  },
+  "id": "pPJILWQn8nS1mQOz",
+  "tags": []
+}
